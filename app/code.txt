@@ -1,0 +1,33 @@
+<nav className={'sticky h-14 top-0 z-30 w-full border-b border-gray-200 bg-white/75 backdrop-blur-lg transition-all'}>
+            <div className={'justify-between'}>
+                <div className={'flex h-14 items-center justify-between border-b border-zinc-200'}>
+
+                    {isSmallDevice? null :  <Logo/>}
+
+                    {isSmallDevice? <div className={'justify-center'}>
+                        <MeasureAppointmentButton className={'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80'}/> <MobileNavbar/> </div>
+                        : <div className={'hidden items-center space-x-4 sm:flex'}>
+                        <>
+                            <Link href={'/'} className={buttonVariants({variant: 'ghost', size: 'lg'})}>Matavimai</Link>
+                            <Link href={'/'} className={buttonVariants({variant: 'ghost', size: 'lg'})}>Materialai</Link>
+                            <Link href={'/'} className={buttonVariants({variant: 'ghost', size: 'lg'})}>Apmokejimas</Link>
+                            <Link href={'/'} className={buttonVariants({variant: 'ghost', size: 'lg'})}>Kontaktai</Link>
+                        </>
+                        <MeasureAppointmentButton/>
+                    </div>}
+
+
+
+
+                </div>
+            </div>
+        </nav>
+
+
+
+
+        <div className={'bg-primary p-2 my-2 top-4'}>
+                    <Link href={'/'} className={'flex z-40'}>
+                        <Image className={'z-50 max-h-20 max-w-fit'} src={LogoPicture} alt={'Virtuvės baldai logo'}/>
+                    </Link>
+                </div>
