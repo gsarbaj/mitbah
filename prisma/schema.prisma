@@ -27,12 +27,15 @@ model User {
 }
 
 model Session {
-  id         Int      @id @default(autoincrement())
-  createdAt  DateTime @default(now())
-  session_id String
+  id         Int                      @id @default(autoincrement())
+  createdAt  DateTime                 @default(now())
+  session_id String                   @unique
+  click      MeasureAppointmentClick?
 }
 
-model Test {
-  id   Int    @id @default(autoincrement())
-  test String
+model MeasureAppointmentClick {
+  id         Int      @id @default(autoincrement())
+  createdAt  DateTime @default(now())
+  session    Session  @relation(fields: [session_id], references: [session_id])
+  session_id String   @unique
 }

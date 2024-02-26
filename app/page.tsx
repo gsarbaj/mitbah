@@ -8,7 +8,7 @@ import CardStack from "@/components/triger-cards/card-stack";
 import TestForm from "@/components/forms/test-form";
 import * as actions from '@/actions'
 import {cookies} from 'next/headers'
-import CookieSet from "@/components/CookieSet";
+import RegisterFirstVisitCookieSet from "@/components/RegisterFirstVisitCookieSet";
 
 
 export default async function Home() {
@@ -19,7 +19,7 @@ export default async function Home() {
 
     return (
         <main>
-            {isFirstTime ? <CookieSet/> : null}
+            {isFirstTime ? <RegisterFirstVisitCookieSet/> : null}
             <Hero/>
             <TestForm/>
         </main>

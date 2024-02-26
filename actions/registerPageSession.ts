@@ -5,10 +5,12 @@ import {cookies} from "next/headers";
 
 export async function registerPageSession() {
 
+
     if (!cookies().has("isFirstTime")) {
         const sessionID = crypto.randomUUID()
 
-        cookies().set("isFirstTime", "false")
+        cookies().set("isFirstTime", "false", {expires: Date.now() + 9000000000})
+        cookies().set("session_id", sessionID.toString(), {expires: Date.now() +9000000000})
 
 
         const session = await db.session.create({

@@ -2,9 +2,9 @@
 import {useEffect} from "react";
 import * as actions from '@/actions'
 
-export default function CookieSet() {
+export default function RegisterMeasureAppointmentCookieSet() {
     useEffect(() => {
-        actions.registerPageSession().finally()
+        actions.registerMeasureAppointmentClick().finally()
     })
     return null
 };

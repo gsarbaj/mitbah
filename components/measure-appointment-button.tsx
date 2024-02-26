@@ -14,7 +14,7 @@ export default function MeasureAppointmentButton({className, iconClassName, addi
     // @ts-ignore
     return (
         <>
-            <form action={actions.registerMeasureAppointment}>
+            <form action={actions.registerMeasureAppointmentClick}>
                 <Button className={cn(className)} type={'submit'}>
                     <CalendarIcon className={cn("mr-2 h-4 w-4", iconClassName)}/>
                     Iškviesti matavimo specialist<Link href={'/matavimai/iskviesti'}
