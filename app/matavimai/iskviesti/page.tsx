@@ -12,7 +12,6 @@ export default function IskviestiMatavimui() {
     const isFirstTime: boolean = !hasCookie("isFirstTime")
     const isFirstClick: boolean = !hasCookie("FirstClick")
     const sessionId: boolean =!hasCookie('session_id')
-    console.log(isFirstTime)
 
 
 
