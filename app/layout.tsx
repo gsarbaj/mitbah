@@ -12,7 +12,13 @@ export const metadata: Metadata = {
     template: "Virtuvės baldai - %s"
   },
   description: "Virtuvės baldai - Prabanga prieinama kiekvienam. Virtuvės baldų gamyba pagal individualius užsakymus",
-  keywords: "Virtuvės baldai, baldai pagal užsakymą"
+  keywords: "Virtuvės baldai, baldai pagal užsakymą",
+  formatDetection: {
+    telephone: false,
+    date: false,
+    email: false,
+    address: false
+  }
 };
 
 export default function RootLayout({
@@ -22,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="lt">
-      <body className={cn('min-h-screen antialiased grainy', inter.className)}>
+      <body className={cn('min-h-screen  grainy', inter.className)}>
         <Navbar/>
         {children}
       </body>

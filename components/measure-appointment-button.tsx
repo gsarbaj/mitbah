@@ -11,19 +11,15 @@ export default function MeasureAppointmentButton({className, iconClassName, addi
     additionalIcon?: ReactNode
 }) {
 
-    // @ts-ignore
     return (
         <>
             <form action={actions.registerMeasureAppointmentClick}>
-                <Button className={cn(className)} type={'submit'}>
+                <Button className={`${cn(className)}`} type={'submit'}>
                     <CalendarIcon className={cn("mr-2 h-4 w-4", iconClassName)}/>
-                    Iškviesti matavimo specialist<Link href={'/matavimai/iskviesti'}
-                                                       prefetch={true}>ą</Link>&nbsp;&nbsp;
+                    Iškviesti matavimo specialist<Link href={'/matavimai/iskviesti'} prefetch={true}>ą</Link>&nbsp;&nbsp;
                     {additionalIcon}
-
                 </Button>
             </form>
-
         </>
     );
 };

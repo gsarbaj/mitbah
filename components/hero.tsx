@@ -19,7 +19,6 @@ export default function Hero() {
                 className={
                     "absolute inset-y-1/3 left-0 text-center w-full"
                 }
-                //absolute h-full top-0 left-0 mb-12 mt-28 flex flex-col items-center justify-center text-center sm:mt-40 mx-auto md:px-20
             >
                 <div>
                     <h2
@@ -32,7 +31,8 @@ export default function Hero() {
                 <div className={'flex'}>
                     <h1
                         className={
-                            "font-bold sm:text-4xl md:text-4xl lg:text-5xl xl:text-6xl w-5/6 mx-auto"
+
+                            'font-bold w-5/6 mx-auto text-2xl 2xl:text-6xl xl:text-6xl lg:text-5xl md:text-4xl sm:text-3xl'
                         }
                     >
                         <span className={"text-primary"}>Virtuvės baldai. </span>Prabanga
