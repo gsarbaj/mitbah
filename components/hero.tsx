@@ -13,6 +13,7 @@ export default function Hero() {
                 alt={"Virtuvės baldai"}
                 placeholder={"blur"}
                 className={"-z-10"}
+                loading={'eager'}
             />
             <div className={'top-0 left-0 absolute w-full h-full bg-white/50'}></div>
             <div
@@ -43,7 +44,7 @@ export default function Hero() {
 
                 <br/>
                 <MeasureAppointmentButton
-                    className={"lg:py-6 lg:text-xl"}
+                    className={"lg:py-6 lg:text-xl shadow"}
                     iconClassName={"lg:h-6 lg:w-6"}
                     additionalIcon={<DoubleArrowRightIcon className="lg:h-6 lg:w-6"/>}
                 />

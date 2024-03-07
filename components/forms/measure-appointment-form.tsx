@@ -25,6 +25,7 @@ import {
     PopoverContent,
     PopoverTrigger,
 } from "@/components/ui/popover"
+import { PopoverClose } from "@radix-ui/react-popover"
 import { toast } from "@/components/ui/use-toast"
 import {useState} from "react";
 import {lt} from "date-fns/locale";
@@ -44,11 +45,29 @@ const formSchema = z.object({
 
 const description = 'This is a description.'
 
+
 export default function MeasureAppointmentForm() {
 
     const [firstFormDivClassName, setFirstFormDivClassName] = useState("")
     const [secondFormDivClassName, setSecondFormDivClassName] = useState("hidden")
     const [thirdFormDivClassName, setThirdFormDivClassName] = useState("hidden")
+
+    const [firstStepClassName, setFirstStepClassName] = useState('h-10 w-10 bg-primary rounded-full opacity-50')
+    const [secondStepClassName, setSecondStepClassName] = useState('h-10 w-10 bg-slate-300 rounded-full')
+    const [thirdStepClassName, setThirdStepClassName] = useState('h-10 w-10 bg-slate-300 rounded-full')
+
+    const [firstSign, setFirsSign] = useState("1")
+    const [secondSign, setSecondSign] = useState("2")
+    const [thirdSign, setThirdSign] = useState("3")
+
+    const [firstWord, setFirstWord] = useState('')
+    const [secondWord, setSecondWord] = useState('text-slate-300')
+    const [thirdWord, setThirdWord] = useState('text-slate-300')
+
+    const [firstLine, setFirstLine] = useState("h-5 w-px bg-primary mt-1 opacity-50")
+    const [secondLine, setSecondLine] = useState("h-5 w-px bg-slate-300 mt-1")
+
+    const [finalBlock, setFinalBlock] = useState('hidden')
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -58,11 +77,15 @@ export default function MeasureAppointmentForm() {
     })
 
 
-
     function firstFormSubmit(values: z.infer<typeof formSchema>) {
 
         setFirstFormDivClassName('hidden')
         setSecondFormDivClassName('')
+        setFirstStepClassName('h-10 w-10 bg-primary rounded-full')
+        setSecondStepClassName('h-10 w-10 bg-primary opacity-50 rounded-full')
+        setFirsSign(String.fromCharCode(10004))
+        setSecondWord('')
+        setFirstLine('h-5 w-px bg-primary mt-1')
         console.log(values);
     }
 
@@ -70,21 +93,27 @@ export default function MeasureAppointmentForm() {
 
         setSecondFormDivClassName('hidden')
         setThirdFormDivClassName('')
+
+        setSecondSign(String.fromCharCode(10004))
+        setSecondStepClassName('h-10 w-10 bg-primary rounded-full')
+        setThirdStepClassName('h-10 w-10 bg-primary opacity-50 rounded-full')
+        setThirdWord('')
+        setSecondLine('h-5 w-px bg-primary mt-1 opacity-50')
+
         console.log(values);
     }
 
     function thirdFormSubmit(values: z.infer<typeof formSchema>) {
 
         setThirdFormDivClassName('hidden')
+
+        setThirdSign(String.fromCharCode(10004))
+        setThirdStepClassName('h-10 w-10 bg-primary rounded-full')
+        setSecondLine('h-5 w-px bg-primary mt-1')
+        setFinalBlock('w-80 h-80 bg-primary')
+
         console.log(values);
-        toast({
-            title: "You submitted the following values:",
-            description: (
-                <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-            ),
-        })
+
     }
 
     return (
@@ -199,7 +228,7 @@ export default function MeasureAppointmentForm() {
                                             <FormControl>
                                                 <Button
                                                     variant={"outline"}
-                                                    className={cn(
+                                                    className={"min-w-80 bg-transparent"+cn(
                                                         "w-[240px] pl-3 text-left font-normal",
                                                         !field.value && "text-muted-foreground"
                                                     )}
@@ -213,50 +242,116 @@ export default function MeasureAppointmentForm() {
                                                 </Button>
                                             </FormControl>
                                         </PopoverTrigger>
-                                        <PopoverContent className="w-auto p-0" align="start">
-                                            <Calendar
-                                                locale={lt}
-                                                mode="single"
-                                                selected={field.value}
-                                                onSelect={field.onChange}
-                                                disabled={(date) =>
-                                                    date < new Date() || date < new Date("1900-01-01")
-                                                }
-                                                initialFocus
-                                            />
+                                        <PopoverContent className="w-auto p-0 shadow" align="start">
+
+                                                <Calendar
+                                                    showOutsideDays
+                                                    locale={lt}
+                                                    mode="single"
+                                                    selected={field.value}
+                                                    onSelect={field.onChange}
+                                                    disabled={(date) =>
+                                                        date < new Date() || date < new Date("1900-01-01")
+                                                    }
+                                                    initialFocus
+                                                />
+
+
+                                            <PopoverClose asChild>
+                                                <Button>{field.value ? (
+                                                  "Iškviesti " + format(field.value, "EEEE, MMMM do", {locale: lt})
+                                                ) : (
+                                                    <span>Pasirinkti tinkamą datą</span>
+                                                )}</Button>
+                                            </PopoverClose>
+
+
                                         </PopoverContent>
                                     </Popover>
                                     <FormDescription>
-                                        Your date of birth is used to calculate your age.
+                                        Atvykimo laiką suderinsime telefonu
                                     </FormDescription>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit">Submit</Button>
+                        <Button type="submit">{form.getValues("visit_date")? `Iškviesti ${format(form.getValues("visit_date") || new Date(), "EEEE, MMMM do", {locale: lt})}`: <p>Pasirinkti datą</p>}</Button>
                     </form>
                 </Form>
             </div>
 
+            {/*Final Block*/}
 
-            {/* summary*/}
-            <div className={'border-2 rounded'}>
-                <h2 className={'font-bold m-4'}>Trys žingsniai, kad pradėti kurti savo virtuvę</h2>
-
-                <div>
-                   <div className={'h-10 w-10 bg-primary rounded-full'}>
-                       <div className={'relative text-center top-1/2 -translate-y-1/2'}>1</div>
-                   </div>
-                </div>
-
-
+            <div className={finalBlock}>
 
             </div>
 
+
+            {/* summary*/}
+            <div className={'border-2 rounded shadow'}>
+                <h2 className={'font-bold m-4'}>Trys žingsniai, kad pradėti kurti savo virtuvę</h2>
+
+                {/*First Circle*/}
+
+                <div className={'flex ml-4 mt-1'}>
+                    <div className={''}>
+                        <div className={firstStepClassName}>
+                            <div className={'relative text-center top-1/2 -translate-y-1/2'}><p className={'text-primary-foreground'}>{firstSign}</p></div>
+                        </div>
+                        <div className={'flex justify-center'}>
+                            <div className={firstLine}></div>
+                        </div>
+                    </div>
+
+
+                    <div className={'ml-2'}>
+                        <div className={firstWord}><p className={'font-semibold'}>Asmeniniai duomenys</p> </div>
+                        <div className={firstWord}><p>Įveskite savo vardą ir telefono numerį</p></div>
+                    </div>
+
+
+                </div>
+
+                {/*Second Circle*/}
+
+                <div className={'flex ml-4 mt-1'}>
+                    <div className={''}>
+                        <div className={secondStepClassName}>
+                            <div className={'relative text-center top-1/2 -translate-y-1/2'}><p className={'text-primary-foreground'}>{secondSign}</p></div>
+                        </div>
+                        <div className={'flex justify-center'}>
+                            <div className={secondLine}></div>
+                        </div>
+                    </div>
+
+
+                    <div className={'ml-2'}>
+                        <div className={secondWord}><p className={'font-semibold'}>Adresas</p> </div>
+                        <div className={secondWord}><p>Vieta darbuotojui atvykti</p></div>
+                    </div>
+                </div>
+
+                {/*Third Circle*/}
+
+                <div className={'flex ml-4 mt-1'}>
+                    <div className={''}>
+                        <div className={thirdStepClassName}>
+                            <div className={'relative text-center top-1/2 -translate-y-1/2'}><p className={'text-primary-foreground'}>{thirdSign}</p></div>
+                        </div>
+                        <div className={'flex justify-center'}>
+                            {/*<div className={'h-5 w-px bg-primary mt-1'}></div>*/}
+                        </div>
+
+                    </div>
+
+
+                    <div className={'ml-2 mb-4'}>
+                        <div className={thirdWord}><p className={'font-semibold'}>Atvykimo data</p> </div>
+                        <div className={thirdWord}><p>Atvykimo laiką suderinsime telefonu</p></div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-
-
         </>
     );
 };
