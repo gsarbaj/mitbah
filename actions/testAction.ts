@@ -29,7 +29,6 @@ export async function createTest(formData: FormData) {
     })
 
     //console.log(user);
-
     let text_message = `Naujas klientas: 
 ${first_name} ${last_name} 
 ${phoneNumber}, ${emailAddress}`

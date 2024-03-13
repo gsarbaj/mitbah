@@ -111,10 +111,13 @@ export default function MeasureAppointmentForm() {
         setFirstLine('h-5 w-px bg-primary mt-1')
         console.log(values);
 
+        actions.newUserTelegramMessage(values).finally()
+
         router.replace(`?address`)
 
         //@ts-ignore
         actions.registerNewUser(values).finally()
+
     }
 
     function secondFormSubmit(values: z.infer<typeof formSchema>) {
@@ -145,6 +148,8 @@ export default function MeasureAppointmentForm() {
 
         //@ts-ignore
         actions.registerNewUser(values).finally()
+
+        actions.newVisitTelegramMessage(values).finally()
 
         //@ts-ignore
         actions.registerNewVisit(values).finally()
