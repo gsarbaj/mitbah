@@ -6,7 +6,7 @@ import {cookies} from "next/headers";
 import * as actions from '@/actions'
 
 
-export async function registerMeasureAppointmentClick() {
+export async function registerMeasureAppointmentClickNoRedirection() {
 
 
     if(!cookies().has("session_id")){
@@ -20,7 +20,6 @@ export async function registerMeasureAppointmentClick() {
             }
         })
 
-        console.log("First")
 
         const clickRegister = await db.measureAppointmentClick.create({
             data: {
@@ -34,14 +33,13 @@ export async function registerMeasureAppointmentClick() {
 
         const session_id = cookies().get("session_id")
 
-        const sessionExist =  await db.session.findFirst({
+        const clickExist =  await db.measureAppointmentClick.findFirst({
             where: {
                 session_id: session_id?.value
             }
         })
 
-        if (!sessionExist){
-            console.log(sessionExist);
+        if (!clickExist){
             const clickRegister = await db.measureAppointmentClick.create({
                 data: {
                     session_id: session_id?.value as string
@@ -50,9 +48,4 @@ export async function registerMeasureAppointmentClick() {
         }
 
     }
-
-    console.log('hello')
-
-    redirect('/matavimai/iskviesti')
-
 }

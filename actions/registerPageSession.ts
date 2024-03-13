@@ -7,6 +7,8 @@ export async function registerPageSession() {
 
 
     if (!cookies().has("isFirstTime")) {
+        console.log("hi")
+
         const sessionID = crypto.randomUUID()
 
         cookies().set("isFirstTime", "false", {expires: Date.now() + 9000000000})

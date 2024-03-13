@@ -6,6 +6,8 @@ import {zodResolver} from "@hookform/resolvers/zod";
 import { CalendarIcon } from "@radix-ui/react-icons"
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
+import * as actions from '@/actions'
+
 
 
 import {Button} from "@/components/ui/button"
@@ -26,27 +28,35 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import { PopoverClose } from "@radix-ui/react-popover"
-import { toast } from "@/components/ui/use-toast"
 import {useState} from "react";
 import {lt} from "date-fns/locale";
+import {useRouter} from "next/navigation";
+
+import { useCookies } from 'next-client-cookies';
+
+
 
 const formSchema = z.object({
-    phone_number: z.string().min(5, {
-        message: 'kjh'
+    phone_number: z.string().min(7, {
+        message: 'Įveskite savo telefono numerį'
     }).max(16, {
-        message: ''
+        message: 'Įveskite savo telefono numerį'
     }),
     customer_name: z.string().optional(),
     address: z.string().optional(),
-    city: z.string().optional(),
+    region: z.string().optional(),
     visit_date: z.date().optional(),
-    visit_time: z.date().optional()
+    visit_time: z.date().optional(),
+    session_id: z.string().optional()
 })
 
 const description = 'This is a description.'
 
 
 export default function MeasureAppointmentForm() {
+
+
+    const router = useRouter()
 
     const [firstFormDivClassName, setFirstFormDivClassName] = useState("")
     const [secondFormDivClassName, setSecondFormDivClassName] = useState("hidden")
@@ -69,15 +79,28 @@ export default function MeasureAppointmentForm() {
 
     const [finalBlock, setFinalBlock] = useState('hidden')
 
+    let sessionId: string | undefined = useCookies().get('session_id')
+
+
+    if (!sessionId) {
+        sessionId = actions.randomIdGeneration()[Symbol.toStringTag]
+        actions.registerCookiesAndSession(sessionId).finally()
+    }
+
+
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            phone_number: "+370"
+            phone_number: "+370",
+            // @ts-ignore
+            session_id: sessionId
         }
     })
 
 
     function firstFormSubmit(values: z.infer<typeof formSchema>) {
+
 
         setFirstFormDivClassName('hidden')
         setSecondFormDivClassName('')
@@ -87,6 +110,11 @@ export default function MeasureAppointmentForm() {
         setSecondWord('')
         setFirstLine('h-5 w-px bg-primary mt-1')
         console.log(values);
+
+        router.replace(`?address`)
+
+        //@ts-ignore
+        actions.registerNewUser(values).finally()
     }
 
     function secondFormSubmit(values: z.infer<typeof formSchema>) {
@@ -100,6 +128,9 @@ export default function MeasureAppointmentForm() {
         setThirdWord('')
         setSecondLine('h-5 w-px bg-primary mt-1 opacity-50')
 
+        //@ts-ignore
+        actions.registerNewUser(values).finally()
+
         console.log(values);
     }
 
@@ -110,9 +141,20 @@ export default function MeasureAppointmentForm() {
         setThirdSign(String.fromCharCode(10004))
         setThirdStepClassName('h-10 w-10 bg-primary rounded-full')
         setSecondLine('h-5 w-px bg-primary mt-1')
-        setFinalBlock('w-80 h-80 bg-primary')
+        setFinalBlock('w-80 h-80')
+
+        //@ts-ignore
+        actions.registerNewUser(values).finally()
+
+        //@ts-ignore
+        actions.registerNewVisit(values).finally()
+
+
+        setTimeout(() => actions.navigate('/').finally(), 6000)
 
         console.log(values);
+
+
 
     }
 
@@ -127,6 +169,21 @@ export default function MeasureAppointmentForm() {
                         <h3 className={'font-bold m-4'}>Užpildykite formą 1</h3>
                         <div className={''}>
                             <div className={'space-y-4'}>
+
+                                <FormField
+                                    control={form.control}
+                                    name="session_id"
+                                    render={({ field }) => (
+                                        <FormItem hidden>
+                                            <FormLabel></FormLabel>
+                                            <FormControl>
+                                                <Input {...field} />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
+                                />
+
                                 <FormField
                                     control={form.control}
                                     name="phone_number"
@@ -181,7 +238,7 @@ export default function MeasureAppointmentForm() {
                                         <FormItem>
                                             <FormLabel>Adresas</FormLabel>
                                             <FormControl>
-                                                <Input className={'w-80'} inputMode={'text'} placeholder="Draugystes g. 11-53" {...field}  autoFocus/>
+                                                <Input className={'w-80'} inputMode={'text'} placeholder="Draugystės g. 27-53" {...field}  autoFocus/>
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -189,12 +246,12 @@ export default function MeasureAppointmentForm() {
                                 />
                                 <FormField
                                     control={form.control}
-                                    name="customer_name"
+                                    name="region"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Miestas</FormLabel>
+                                            <FormLabel>Miestas/Vietovė</FormLabel>
                                             <FormControl>
-                                                <Input className={'w-80 focus:ring-2 focus:ring-blue-500 focus:outline-none'} inputMode={'text'} placeholder="Visaginas" {...field} />
+                                                <Input className={'w-80 focus:ring-2 focus:ring-blue-500 focus:outline-none'} inputMode={'text'} placeholder="Vilnius" {...field} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -283,7 +340,13 @@ export default function MeasureAppointmentForm() {
             {/*Final Block*/}
 
             <div className={finalBlock}>
-
+                <div className={' flex flex-col justify-center'}>
+                    <h3 className={'font-bold m-4'}>Užpildykite formą 2</h3>
+                    <div>
+                        {form.getValues("visit_date")? ` Apsilankymas užsakytas ${format(form.getValues("visit_date") || new Date(), "EEEE, MMMM do", {locale: lt})}. `: <p>Pasirinkti datą</p>}
+                        Netrukus su jumis susisieks konsultantas nustatyti vizito laiką
+                    </div>
+                </div>
             </div>
 
 

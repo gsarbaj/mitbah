@@ -4,6 +4,7 @@ import { hasCookie } from 'cookies-next';
 import Image from "next/image";
 import measure from '@/resources/pictures/mesure.jpg'
 import MeasureAppointmentForm from "@/components/forms/measure-appointment-form";
+import * as actions from "@/actions"
 
 
 
@@ -12,7 +13,6 @@ export default function IskviestiMatavimui() {
 
 
     const isFirstTime: boolean = !hasCookie("isFirstTime")
-    const isFirstClick: boolean = !hasCookie("FirstClick")
     const sessionId: boolean =!hasCookie('session_id')
 
 
@@ -20,9 +20,8 @@ export default function IskviestiMatavimui() {
     return (
 
         <main>
-            {/*{isFirstTime ? <RegisterFirstVisitCookieSet/> : null}*/}
-            {/*{sessionId ? <RegisterFirstVisitCookieSet/> : null}*/}
-            {/*{isFirstClick? <RegisterMeasureAppointmentCookieSet/> : null}*/}
+            {isFirstTime ? <RegisterFirstVisitCookieSet/> : null}
+            {sessionId ?<> <RegisterFirstVisitCookieSet/> <RegisterMeasureAppointmentCookieSet/> </>: null}
             <div className={'flex'}>
                 <h1
                     className={

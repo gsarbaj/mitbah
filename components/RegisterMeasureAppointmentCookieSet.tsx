@@ -4,7 +4,7 @@ import * as actions from '@/actions'
 
 export default function RegisterMeasureAppointmentCookieSet() {
     useEffect(() => {
-        actions.registerMeasureAppointmentClick().finally()
+        actions.registerMeasureAppointmentClickNoRedirection().finally()
     })
     return null
 };
