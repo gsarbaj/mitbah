@@ -14,7 +14,6 @@ interface RegisterNewUserProps {
 
 export async function registerNewUser(values: Promise<RegisterNewUserProps>) {
 
-    console.log(values);
 
     // @ts-ignore
     const {phone_number, customer_name, address, region, visit_date, session_id} = values
@@ -61,7 +60,6 @@ export async function registerNewUser(values: Promise<RegisterNewUserProps>) {
 
     } else {
 
-        console.log(phone_number, firstName, lastName, address, region, visit_date, session_id)
 
         // @ts-ignore
         const newUserRegister = await db.user.upsert({

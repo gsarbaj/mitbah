@@ -34,7 +34,7 @@ ${first_name} ${last_name}
 ${phoneNumber}, ${emailAddress}`
 
 
-    await axios.post(`${process.env["TELEGRAM_BOT_API"]}/sendMessage`,{
+    await axios.post(`${process.env["TELEGRAM_BOT_API"]}/sendMessage`, {
         chat_id: bot.CHAT_ID,
         text: text_message
     })

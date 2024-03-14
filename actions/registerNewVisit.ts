@@ -37,5 +37,4 @@ export async function registerNewVisit(values: Promise<RegisterNewUserProps>) {
             visit_date: visit_date
         }
     })
-
 }

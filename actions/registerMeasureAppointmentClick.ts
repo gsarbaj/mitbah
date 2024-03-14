@@ -9,10 +9,10 @@ import * as actions from '@/actions'
 export async function registerMeasureAppointmentClick() {
 
 
-    if(!cookies().has("session_id")){
+    if (!cookies().has("session_id")) {
 
         const sessionID = crypto.randomUUID()
-        cookies().set("session_id", sessionID.toString(), {expires: Date.now() +9000000000})
+        cookies().set("session_id", sessionID.toString(), {expires: Date.now() + 9000000000})
 
         const sessionRegister = await db.session.create({
             data: {
@@ -20,7 +20,6 @@ export async function registerMeasureAppointmentClick() {
             }
         })
 
-        console.log("First")
 
         const clickRegister = await db.measureAppointmentClick.create({
             data: {
@@ -29,18 +28,17 @@ export async function registerMeasureAppointmentClick() {
         })
 
 
-
     } else {
 
         const session_id = cookies().get("session_id")
 
-        const sessionExist =  await db.session.findFirst({
+        const sessionExist = await db.session.findFirst({
             where: {
                 session_id: session_id?.value
             }
         })
 
-        if (!sessionExist){
+        if (!sessionExist) {
             console.log(sessionExist);
             const clickRegister = await db.measureAppointmentClick.create({
                 data: {
@@ -51,7 +49,6 @@ export async function registerMeasureAppointmentClick() {
 
     }
 
-    console.log('hello')
 
     redirect('/matavimai/iskviesti')
 
