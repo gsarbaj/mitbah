@@ -1,21 +1,16 @@
-import {Card,
-    CardContent,
-    CardDescription,
-    CardFooter,
-    CardHeader,
-    CardTitle,} from "@/components/ui/card";
+import {Card, CardContent, CardFooter,} from "@/components/ui/card";
 
 
-export default function CardTrigger ({imgCard, mainText, extraText}: any) {
+export default function CardTrigger({imgCard, mainText, extraText}: any) {
 
     return (
         <>
-            <div className={'flex justify-center text-center'}>
+            <div className={'flex justify-center text-center max-w-40'}>
                 <Card className={''}>
                     <CardContent className={'justify-center'}>
                         <br/>
                         <div className={'justify-center'}>
-                        {imgCard}
+                            {imgCard}
                         </div>
                         <br/>
                         <p className={'font-bold'}>{mainText}</p>

@@ -29,7 +29,7 @@ import {
 import {PopoverClose} from "@radix-ui/react-popover"
 import {useState} from "react";
 import {lt} from "date-fns/locale";
-import {useRouter} from "next/navigation";
+import {useRouter, useSearchParams} from "next/navigation";
 
 import {useCookies} from 'next-client-cookies';
 
@@ -55,6 +55,7 @@ export default function MeasureAppointmentForm() {
 
 
     const router = useRouter()
+    const searchParams = useSearchParams()
 
     const [firstFormDivClassName, setFirstFormDivClassName] = useState("")
     const [secondFormDivClassName, setSecondFormDivClassName] = useState("hidden")
@@ -109,7 +110,7 @@ export default function MeasureAppointmentForm() {
 
         actions.newUserTelegramMessage(values).finally()
 
-        router.replace(`?address`)
+        router.push(`?address=true`, { scroll: false })
 
         //@ts-ignore
         actions.registerNewUser(values).finally()
@@ -424,6 +425,7 @@ export default function MeasureAppointmentForm() {
                     </div>
                 </div>
             </div>
+
         </>
     );
 };
